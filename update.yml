@@ -1,0 +1,39 @@
+name: Atualizar painel de agendas
+
+on:
+  schedule:
+    # A cada 6 horas (horário UTC). Ajuste à vontade — sintaxe cron padrão.
+    - cron: "0 */6 * * *"
+  workflow_dispatch: {}   # permite rodar manualmente pelo botão "Run workflow"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: pip install -r scripts/requirements.txt
+
+      - name: Gerar index.html com os dados mais recentes
+        env:
+          ICAL_URLS_JSON: ${{ secrets.ICAL_URLS_JSON }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/build.py
+
+      - name: Publicar (commit) se algo mudou
+        run: |
+          git config user.name "painel-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --quiet --cached || git commit -m "Atualização automática do painel"
+          git push

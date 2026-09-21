@@ -1,0 +1,18 @@
+{
+  "detectionRule": { "delimiter": "-", "position": "last" },
+  "overrides": {
+    "gtek_cd-tiago-9h": { "name": "Tiago", "color": "#34d399" },
+    "gtek_nao-identificado": { "name": "Geral", "color": "#F472B6" },
+    "gtek_tiago": { "name": "Tiago", "color": "#34d399" },
+    "gtek_treinamento-auditorio-leandro-morgana": { "name": "Não identificado", "color": "#f472b6" },
+    "perif_retencoes": { "name": "Contato retenções", "color": "#000000" }
+  },
+  "hiddenKeys": {
+    "gtek_tiago-isa-evelin-maico-pablissio-calil": "Tiago, Isa, Evelin, Maico, Pablissio, Calil",
+    "gtek_treinamento-auditorio-leandro-morgana": "Não identificado",
+    "gtek_word-openoffice-e-bgr": "word, openoffice e BGR"
+  },
+  "customLabels": [
+    { "id": "lab_1789995695435", "name": "Aniversário", "color": "#2f6f4f" }
+  ]
+}

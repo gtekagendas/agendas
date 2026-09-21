@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Painel Gtek — Agendas (instantâneo)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0B0B; --surface: #101010; --surface-2: #171717; --border: #262626;
+    --ink: #F4F4F4; --muted: #93938F; --accent: #F97316; --accent-ink: #FFFFFF;
+    --accent-soft: rgba(249,115,22,.14); --danger: #F43F5E; --radius: 10px; --focus: #F97316;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); min-height:100%;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px); }
+  html { scroll-padding-top: env(safe-area-inset-top,0px); }
+  body { line-height:1.45; -webkit-font-smoothing:antialiased; }
+  button { font-family:inherit; }
+  button:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
+  .wrap { max-width:1180px; margin:0 auto; padding:24px 20px 64px; }
+  .topbar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-bottom:10px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand .logo-badge { width:42px; height:42px; border-radius:11px; background:#000; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
+  .brand .logo-badge img { width:100%; height:100%; object-fit:cover; }
+  .brand h1 { margin:0; font-size:22px; font-weight:800; letter-spacing:-.01em; }
+  .brand p { margin:0; color:var(--muted); font-size:13px; }
+  .views { display:inline-flex; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:3px; gap:2px; }
+  .views button { border:none; background:transparent; color:var(--muted); padding:7px 16px; border-radius:999px;
+    font-size:13.5px; font-weight:600; cursor:pointer; }
+  .views button.active { background:var(--accent); color:var(--accent-ink); }
+  .month-nav { display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border);
+    border-radius:999px; padding:4px 6px 4px 14px; }
+  .month-nav .label { font-weight:700; font-size:14.5px; min-width:148px; text-align:center; }
+  .icon-btn { width:30px; height:30px; border-radius:999px; border:1px solid var(--border); background:var(--surface-2);
+    color:var(--ink); cursor:pointer; font-size:15px; display:inline-flex; align-items:center; justify-content:center; }
+  .icon-btn:disabled { opacity:.35; cursor:not-allowed; }
+  .icon-btn:hover:not(:disabled) { background:var(--accent-soft); border-color:var(--accent); }
+  .snapshot-note { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-bottom:18px;
+    font-size:12.5px; color:var(--muted); }
+  .snapshot-note a.btn { text-decoration:none; border:1px solid var(--accent); color:var(--accent-ink); background:var(--accent);
+    border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:700; }
+  .summary { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+  .chip { display:inline-flex; align-items:center; gap:7px; background:var(--surface); border:1px solid var(--border);
+    border-radius:999px; padding:6px 12px 6px 8px; font-size:12.5px; font-weight:600; }
+  .dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .chip .n { color:var(--muted); font-weight:700; }
+  .chip.total { background:var(--accent-soft); border-color:var(--accent); }
+  .cal { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:var(--surface); }
+  .cal-head { display:grid; grid-template-columns:repeat(7,1fr) 64px; background:var(--surface-2); border-bottom:1px solid var(--border); }
+  .cal-head div { padding:9px 8px; font-size:11.5px; font-weight:700; color:var(--muted); text-align:center; }
+  .cal-head div.wk { border-left:1px solid var(--border); }
+  .week-row { display:grid; grid-template-columns:repeat(7,1fr) 64px; border-bottom:1px solid var(--border); }
+  .week-row:last-child { border-bottom:none; }
+  .day { min-height:92px; padding:6px 6px 8px; border-left:1px solid var(--border); display:flex; flex-direction:column; gap:4px; }
+  .day:first-child { border-left:none; }
+  .day.muted { background:var(--surface-2); }
+  .day .num { font-size:12.5px; font-weight:700; color:var(--muted); }
+  .day.today .num { background:var(--accent); color:var(--accent-ink); width:20px; height:20px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:11.5px; }
+  .tags { display:flex; flex-direction:column; gap:3px; }
+  .tag { font-size:10.8px; font-weight:600; padding:2px 6px; border-radius:5px; color:#fff; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis; line-height:1.5; cursor:pointer; }
+  .tag.more { background:var(--surface-2); color:var(--muted); border:1px dashed var(--border); }
+  .tag:hover { filter:brightness(1.12); }
+  .totals-panel { margin-top:22px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; }
+  .totals-panel h2 { margin:0 0 12px; font-size:14.5px; font-weight:800; }
+  .totals-row { display:flex; align-items:center; gap:10px; padding:6px 0; }
+  .totals-row .name { flex:1; font-size:13px; font-weight:600; }
+  .bar-track { flex:2; height:7px; background:var(--surface-2); border-radius:999px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:999px; }
+  .totals-row .count { font-size:13px; font-weight:800; width:28px; text-align:right; }
+  .backdrop { position:fixed; inset:0; background:rgba(10,14,18,.5); display:none; align-items:flex-start; justify-content:center;
+    padding:40px 16px; z-index:20; overflow-y:auto; }
+  .backdrop.open { display:flex; }
+  .modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; width:100%; max-width:480px;
+    padding:22px; margin-top:env(safe-area-inset-top,0px); }
+  .modal h2 { margin:0 0 4px; font-size:16px; font-weight:800; }
+  .modal .meta { font-size:12.5px; color:var(--muted); margin-bottom:10px; }
+  .modal .title { font-size:14.5px; font-weight:700; margin-bottom:12px; }
+  .modal .cmt { font-size:13px; background:var(--surface-2); border-radius:8px; padding:10px; white-space:pre-wrap; }
+  .modal .close { margin-top:16px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink);
+    border-radius:8px; padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer; float:right; }
+  @media (max-width:720px) {
+    .cal-head, .week-row { grid-template-columns:repeat(7,minmax(0,1fr)) 40px; }
+    .day { min-height:74px; padding:4px; }
+    .tag { font-size:9.5px; padding:1px 4px; }
+    .month-nav .label { min-width:108px; font-size:13px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo-badge"><img src="data:image/png;base64,__LOGO__" alt="Logo Gtek"></div>
+      <div>
+        <h1>Painel Gtek — Agendas</h1>
+        <p id="subtitle"></p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <div class="views" id="views"></div>
+      <div class="month-nav">
+        <button class="icon-btn" id="prevMonth">‹</button>
+        <span class="label" id="monthLabel"></span>
+        <button class="icon-btn" id="nextMonth">›</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="snapshot-note">
+    <span id="snapshotNote">__GENERATED_NOTE__</span>
+    <a class="btn" href="__ISSUE_URL__" target="_blank" rel="noopener">Solicitar atualização</a>
+  </div>
+
+  <div class="summary" id="summary"></div>
+
+  <div class="cal">
+    <div class="cal-head" id="calHead"></div>
+    <div id="calBody"></div>
+  </div>
+
+  <div class="totals-panel">
+    <h2 id="totalsTitle">Totais do mês</h2>
+    <div id="totalsList"></div>
+  </div>
+</div>
+
+<div class="backdrop" id="evBackdrop">
+  <div class="modal">
+    <h2 id="evLabel"></h2>
+    <p class="meta" id="evDate"></p>
+    <p class="title" id="evTitle"></p>
+    <div class="cmt" id="evComment" style="display:none;"></div>
+    <button class="close" id="evClose">Fechar</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var EVENTS = __EVENTS_JSON__;
+  var WEEKDAYS = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  var MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+
+  function pad(n){ return n<10 ? "0"+n : ""+n; }
+
+  var monthKeys = {};
+  EVENTS.forEach(function(e){ monthKeys[e.date.slice(0,7)] = true; });
+  var availableMonths = Object.keys(monthKeys).sort();
+
+  var state = { view: "geral", monthIdx: Math.min(availableMonths.length - 1, availableMonths.indexOf(availableMonths[Math.floor(availableMonths.length/2)])) };
+  // default to the "current" embedded month if present, else middle
+  (function(){
+    var now = new Date();
+    var cur = now.getFullYear() + "-" + pad(now.getMonth()+1);
+    var idx = availableMonths.indexOf(cur);
+    if (idx >= 0) state.monthIdx = idx;
+  })();
+
+  function currentYM(){
+    var ym = availableMonths[state.monthIdx];
+    var parts = ym.split("-");
+    return { year: parseInt(parts[0],10), month: parseInt(parts[1],10)-1 };
+  }
+  function daysInGrid(year, month){
+    var first = new Date(year, month, 1);
+    var startOffset = first.getDay();
+    var total = new Date(year, month+1, 0).getDate();
+    var cells = [];
+    for (var i=0;i<startOffset;i++) cells.push(null);
+    for (var d=1; d<=total; d++) cells.push(d);
+    while (cells.length % 7 !== 0) cells.push(null);
+    return cells;
+  }
+  function todayKey(){
+    var t = new Date();
+    return t.getFullYear()+"-"+pad(t.getMonth()+1)+"-"+pad(t.getDate());
+  }
+  function viewFilter(ev){
+    return state.view === "geral" || ev.view === state.view;
+  }
+
+  function renderViews(){
+    var el = document.getElementById("views");
+    var opts = [["gtek","Gtek Suporte"],["perif","Periféricos"],["geral","Geral"]];
+    el.innerHTML = "";
+    opts.forEach(function(o){
+      var b = document.createElement("button");
+      b.textContent = o[1];
+      if (state.view === o[0]) b.className = "active";
+      b.addEventListener("click", function(){ state.view = o[0]; renderAll(); });
+      el.appendChild(b);
+    });
+  }
+  function renderMonthNav(){
+    var ym = currentYM();
+    document.getElementById("monthLabel").textContent = MONTHS[ym.month] + " de " + ym.year;
+    document.getElementById("prevMonth").disabled = state.monthIdx <= 0;
+    document.getElementById("nextMonth").disabled = state.monthIdx >= availableMonths.length - 1;
+    var labelMap = { gtek: "Gtek Suporte", perif: "Periféricos", geral: "Gtek Suporte + Periféricos" };
+    document.getElementById("subtitle").textContent = labelMap[state.view] + " · instantâneo estático";
+  }
+  function renderCalHead(){
+    var head = document.getElementById("calHead");
+    head.innerHTML = "";
+    WEEKDAYS.forEach(function(w){ var d=document.createElement("div"); d.textContent=w; head.appendChild(d); });
+    var wk = document.createElement("div"); wk.className="wk"; wk.textContent="Sem."; head.appendChild(wk);
+  }
+  function openEventModal(ev){
+    document.getElementById("evLabel").textContent = ev.label;
+    document.getElementById("evDate").textContent = ev.date.split("-").reverse().join("/");
+    document.getElementById("evTitle").textContent = ev.title || "(sem título)";
+    var cEl = document.getElementById("evComment");
+    if (ev.comment) { cEl.style.display = "block"; cEl.textContent = ev.comment; }
+    else { cEl.style.display = "none"; }
+    document.getElementById("evBackdrop").classList.add("open");
+  }
+  function renderCalBody(){
+    var body = document.getElementById("calBody");
+    body.innerHTML = "";
+    var ym = currentYM();
+    var cells = daysInGrid(ym.year, ym.month);
+    var tKey = todayKey();
+    var byDay = {};
+    EVENTS.filter(viewFilter).forEach(function(e){
+      if (e.date.slice(0,7) !== availableMonths[state.monthIdx]) return;
+      if (!byDay[e.date]) byDay[e.date] = [];
+      byDay[e.date].push(e);
+    });
+
+    for (var w=0; w<cells.length/7; w++){
+      var row = document.createElement("div"); row.className="week-row";
+      var weekTotal = 0;
+      for (var i=0;i<7;i++){
+        var dayNum = cells[w*7+i];
+        var cell = document.createElement("div");
+        cell.className = "day" + (dayNum===null ? " muted" : "");
+        if (dayNum !== null){
+          var dateKey = ym.year+"-"+pad(ym.month+1)+"-"+pad(dayNum);
+          var numEl = document.createElement("div"); numEl.className="num"; numEl.textContent=dayNum;
+          if (dateKey===tKey) cell.classList.add("today");
+          cell.appendChild(numEl);
+          var dayEvents = byDay[dateKey] || [];
+          weekTotal += dayEvents.length;
+          var tagsWrap = document.createElement("div"); tagsWrap.className="tags";
+          var maxShow=4;
+          dayEvents.slice(0,maxShow).forEach(function(ev){
+            var t=document.createElement("div"); t.className="tag"; t.style.background=ev.color;
+            t.title = ev.label + (ev.title? " — "+ev.title:"");
+            t.textContent = ev.label;
+            t.addEventListener("click", function(){ openEventModal(ev); });
+            tagsWrap.appendChild(t);
+          });
+          if (dayEvents.length>maxShow){
+            var more=document.createElement("div"); more.className="tag more";
+            more.textContent="+"+(dayEvents.length-maxShow);
+            tagsWrap.appendChild(more);
+          }
+          cell.appendChild(tagsWrap);
+        }
+        row.appendChild(cell);
+      }
+      var wkCell=document.createElement("div"); wkCell.className="wk-total"; wkCell.style.cssText="border-left:1px solid var(--border);display:flex;align-items:center;justify-content:center;background:var(--surface-2);font-weight:800;font-size:15px;";
+      wkCell.textContent = weekTotal;
+      row.appendChild(wkCell);
+      body.appendChild(row);
+    }
+  }
+  function renderSummaryAndTotals(){
+    var summaryEl = document.getElementById("summary");
+    var totalsEl = document.getElementById("totalsList");
+    summaryEl.innerHTML = ""; totalsEl.innerHTML = "";
+    var monthEvents = EVENTS.filter(viewFilter).filter(function(e){ return e.date.slice(0,7)===availableMonths[state.monthIdx]; });
+    var byLabel = {};
+    monthEvents.forEach(function(ev){
+      if (!byLabel[ev.key]) byLabel[ev.key] = { label: ev.label, color: ev.color, count:0 };
+      byLabel[ev.key].count++;
+    });
+    var rows = Object.keys(byLabel).map(function(k){ return byLabel[k]; }).sort(function(a,b){ return b.count-a.count; });
+    var total = monthEvents.length;
+    var totalChip = document.createElement("div"); totalChip.className="chip total";
+    totalChip.innerHTML = "Total do mês <span class='n'>"+total+"</span>";
+    summaryEl.appendChild(totalChip);
+    rows.forEach(function(r){
+      var chip=document.createElement("div"); chip.className="chip";
+      chip.innerHTML = "<span class='dot' style='background:"+r.color+"'></span>"+r.label+" <span class='n'>"+r.count+"</span>";
+      summaryEl.appendChild(chip);
+    });
+    var ym = currentYM();
+    document.getElementById("totalsTitle").textContent = "Totais de "+MONTHS[ym.month]+" — "+total+" compromisso"+(total===1?"":"s");
+    if (!rows.length){
+      var e=document.createElement("div"); e.style.cssText="color:var(--muted);font-size:13px;";
+      e.textContent = "Nenhum compromisso neste período.";
+      totalsEl.appendChild(e); return;
+    }
+    var max = rows[0].count || 1;
+    rows.forEach(function(r){
+      var row=document.createElement("div"); row.className="totals-row";
+      var pct = Math.max(4, Math.round((r.count/max)*100));
+      row.innerHTML = "<div class='name'>"+r.label+"</div><div class='bar-track'><div class='bar-fill' style='width:"+pct+"%;background:"+r.color+"'></div></div><div class='count'>"+r.count+"</div>";
+      totalsEl.appendChild(row);
+    });
+  }
+  function renderAll(){
+    renderViews(); renderMonthNav(); renderCalHead(); renderCalBody(); renderSummaryAndTotals();
+  }
+
+  document.getElementById("prevMonth").addEventListener("click", function(){
+    if (state.monthIdx>0){ state.monthIdx--; renderAll(); }
+  });
+  document.getElementById("nextMonth").addEventListener("click", function(){
+    if (state.monthIdx<availableMonths.length-1){ state.monthIdx++; renderAll(); }
+  });
+  document.getElementById("evClose").addEventListener("click", function(){
+    document.getElementById("evBackdrop").classList.remove("open");
+  });
+  document.getElementById("evBackdrop").addEventListener("click", function(e){
+    if (e.target===this) this.classList.remove("open");
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
