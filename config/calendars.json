@@ -2,15 +2,6 @@
   "_nota": "calendarId aqui é só referência (o e-mail/ID real da agenda). O script busca os dados pelo link secreto iCal, configurado à parte no segredo ICAL_URLS_JSON do GitHub — a chave usada para casar cada agenda é o campo 'key'.",
   "sources": [
     {
-      "key": "gtek",
-      "calendarId": "suportegtek@gmail.com",
-      "name": "Gtek Suporte",
-      "color": null,
-      "tech": null,
-      "view": "gtek",
-      "parseTechnician": true
-    },
-    {
       "key": "perif_ausente",
       "calendarId": "3ebef0e294d25eab62ab770f048c0f4fae11f1cf562a3f1d99dd550b60a8e10b@group.calendar.google.com",
       "name": "Ausente",
@@ -61,24 +52,6 @@
       "name": "Presencial - Eviany",
       "color": "#F43F5E",
       "tech": "Eviany",
-      "view": "perif",
-      "parseTechnician": false
-    },
-    {
-      "key": "perif_retencoes",
-      "calendarId": "935c4ce8243d3097c70044df3ff0831a99ef1d906f21f17e03245c5d5c88e2be@group.calendar.google.com",
-      "name": "Contato retenções",
-      "color": "#2DD4BF",
-      "tech": null,
-      "view": "perif",
-      "parseTechnician": false
-    },
-    {
-      "key": "perif_cliente",
-      "calendarId": "6f5ef88b4ad92206b9e122f7727128b47f04fbb1acba3fa30b14d0b28f6e13d4@group.calendar.google.com",
-      "name": "Contato com cliente",
-      "color": "#818CF8",
-      "tech": null,
       "view": "perif",
       "parseTechnician": false
     }
