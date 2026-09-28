@@ -1,0 +1,89 @@
+{
+  "_nota": "calendarId aqui é só referência (o e-mail/ID real da agenda). O script busca os dados pelo link secreto iCal, configurado à parte no segredo ICAL_URLS_JSON do GitHub — a chave usada para casar cada agenda é o campo 'key'.",
+  "sources": [
+    {
+      "key": "gtek",
+      "calendarId": "suportegtek@gmail.com",
+      "name": "Gtek Suporte",
+      "color": null,
+      "tech": null,
+      "view": "gtek",
+      "parseTechnician": true
+    },
+    {
+      "key": "perif_ausente",
+      "calendarId": "3ebef0e294d25eab62ab770f048c0f4fae11f1cf562a3f1d99dd550b60a8e10b@group.calendar.google.com",
+      "name": "Ausente",
+      "color": "#E879F9",
+      "tech": null,
+      "view": "perif",
+      "parseTechnician": false
+    },
+    {
+      "key": "perif_presencial_rafael",
+      "calendarId": "e38c082db09ef6deb874f75f898d471eb8adaf26b6a7184eb22d94d3ff66b197@group.calendar.google.com",
+      "name": "Presencial - Rafael",
+      "color": "#34D399",
+      "tech": "Rafael",
+      "view": "perif",
+      "parseTechnician": false
+    },
+    {
+      "key": "perif_online_rafael",
+      "calendarId": "gtekperifericos@gmail.com",
+      "name": "Online - Rafael",
+      "color": "#38BDF8",
+      "tech": "Rafael",
+      "view": "perif",
+      "parseTechnician": false
+    },
+    {
+      "key": "perif_comum",
+      "calendarId": "a593522bc4cd5884ff7f4799e405a1d3c0bc82cdabc69d7bc35ec6694d50796f@group.calendar.google.com",
+      "name": "Agenda em comum",
+      "color": "#A3A3A3",
+      "tech": null,
+      "view": "perif",
+      "parseTechnician": false
+    },
+    {
+      "key": "perif_online_eviany",
+      "calendarId": "3292dac53b73dfab5e586281bdef4551b2f5bf8dcc30cb14e934c246b14c1d9b@group.calendar.google.com",
+      "name": "Online - Eviany",
+      "color": "#FBBF24",
+      "tech": "Eviany",
+      "view": "perif",
+      "parseTechnician": false
+    },
+    {
+      "key": "perif_presencial_eviany",
+      "calendarId": "c9cb8a189aaa2ea6c880f25849cfa5d5a46e0fd3f47bf9961cdc2e61aabc028d@group.calendar.google.com",
+      "name": "Presencial - Eviany",
+      "color": "#F43F5E",
+      "tech": "Eviany",
+      "view": "perif",
+      "parseTechnician": false
+    },
+    {
+      "key": "perif_retencoes",
+      "calendarId": "935c4ce8243d3097c70044df3ff0831a99ef1d906f21f17e03245c5d5c88e2be@group.calendar.google.com",
+      "name": "Contato retenções",
+      "color": "#2DD4BF",
+      "tech": null,
+      "view": "perif",
+      "parseTechnician": false
+    },
+    {
+      "key": "perif_cliente",
+      "calendarId": "6f5ef88b4ad92206b9e122f7727128b47f04fbb1acba3fa30b14d0b28f6e13d4@group.calendar.google.com",
+      "name": "Contato com cliente",
+      "color": "#818CF8",
+      "tech": null,
+      "view": "perif",
+      "parseTechnician": false
+    }
+  ],
+  "fetchRangeMonthsBack": 1,
+  "fetchRangeMonthsForward": 2,
+  "timezoneOffset": "-03:00"
+}
