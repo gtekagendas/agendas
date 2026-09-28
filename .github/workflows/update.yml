@@ -3,7 +3,7 @@ name: Atualizar painel de agendas
 on:
   schedule:
     # A cada 6 horas (horário UTC). Ajuste à vontade — sintaxe cron padrão.
-    - cron: "0 */6 * * *"
+   - cron: "*/15 * * * *"
   workflow_dispatch: {}   # permite rodar manualmente pelo botão "Run workflow"
 
 permissions:
