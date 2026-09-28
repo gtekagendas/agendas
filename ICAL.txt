@@ -1,0 +1,9 @@
+json
+{
+  "perif_ausente": "https://calendar.google.com/calendar/ical/3ebef0e294d25eab62ab770f048c0f4fae11f1cf562a3f1d99dd550b60a8e10b%40group.calendar.google.com/public/basic.ics",
+  "perif_presencial_rafael": "https://calendar.google.com/calendar/ical/e38c082db09ef6deb874f75f898d471eb8adaf26b6a7184eb22d94d3ff66b197%40group.calendar.google.com/public/basic.ics",
+  "perif_online_rafael": "https://calendar.google.com/calendar/ical/gtekperifericos%40gmail.com/public/basic.ics",
+  "perif_comum": "https://calendar.google.com/calendar/ical/a593522bc4cd5884ff7f4799e405a1d3c0bc82cdabc69d7bc35ec6694d50796f%40group.calendar.google.com/public/basic.ics",
+  "perif_online_eviany": "https://calendar.google.com/calendar/ical/3292dac53b73dfab5e586281bdef4551b2f5bf8dcc30cb14e934c246b14c1d9b%40group.calendar.google.com/public/basic.ics",
+  "perif_presencial_eviany": "https://calendar.google.com/calendar/ical/c9cb8a189aaa2ea6c880f25849cfa5d5a46e0fd3f47bf9961cdc2e61aabc028d%40group.calendar.google.com/public/basic.ics"
+}
