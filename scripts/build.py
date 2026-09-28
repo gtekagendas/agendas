@@ -202,7 +202,7 @@ def render_html(events, errors):
         with open(LOGO_PATH, encoding="utf-8") as f:
             logo_b64 = f.read().strip()
 
-    generated_at = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+    generated_at = datetime.datetime.now(TZ_BR).strftime("%d/%m/%Y %H:%M")
     issue_title = "Solicitar atualização do painel"
     issue_body = "Por favor, gere uma nova versão do instantâneo do painel com os dados mais recentes."
     issue_url = (
