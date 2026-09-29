@@ -104,11 +104,13 @@ def fetch_ical_events(url, start_date, end_date):
             if dtstart.tzinfo is not None:
                 dtstart = dtstart.astimezone(TZ_BR)
             date_str = dtstart.strftime("%Y-%m-%d")
+            time_str = dtstart.strftime("%H:%M")
         else:
             date_str = dtstart.strftime("%Y-%m-%d")  # all-day event (date only)
+            time_str = None
         uid = str(occ.get("UID", ""))
         instance_id = sanitize_id(uid + "_" + date_str)
-        events.append({"id": instance_id, "summary": summary, "date": date_str})
+        events.append({"id": instance_id, "summary": summary, "date": date_str, "time": time_str})
     return events
 
 
@@ -180,6 +182,7 @@ def build_snapshot():
 
             events_out.append({
                 "date": date_str,
+                "time": ev.get("time"),
                 "key": group_key,
                 "label": label,
                 "color": out_color,

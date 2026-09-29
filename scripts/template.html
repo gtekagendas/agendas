@@ -151,6 +151,13 @@
   var MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
   function pad(n){ return n<10 ? "0"+n : ""+n; }
+  function formatTimeLabel(hhmm){
+    if (!hhmm) return "";
+    var parts = hhmm.split(":");
+    var h = parseInt(parts[0], 10);
+    var m = parseInt(parts[1], 10);
+    return m === 0 ? (h + "h") : (h + "h" + (m < 10 ? "0" + m : m));
+  }
 
   var monthKeys = {};
   EVENTS.forEach(function(e){ monthKeys[e.date.slice(0,7)] = true; });
@@ -226,7 +233,8 @@
   }
   function openEventModal(ev){
     document.getElementById("evLabel").textContent = ev.label;
-    document.getElementById("evDate").textContent = ev.date.split("-").reverse().join("/");
+    var evTimeStr = formatTimeLabel(ev.time);
+    document.getElementById("evDate").textContent = ev.date.split("-").reverse().join("/") + (evTimeStr? " às "+evTimeStr:"");
     document.getElementById("evTitle").textContent = ev.title || "(sem título)";
     var cEl = document.getElementById("evComment");
     if (ev.comment) { cEl.style.display = "block"; cEl.textContent = ev.comment; }
@@ -264,8 +272,9 @@
           var maxShow=4;
           dayEvents.slice(0,maxShow).forEach(function(ev){
             var t=document.createElement("div"); t.className="tag"; t.style.borderLeftColor=ev.color;
-            t.title = ev.label + (ev.title? " — "+ev.title:"");
-            t.textContent = ev.label;
+            var timeStr = formatTimeLabel(ev.time);
+            t.title = ev.label + (timeStr? " "+timeStr:"") + (ev.title? " — "+ev.title:"");
+            t.textContent = ev.label + (timeStr? "  "+timeStr:"");
             t.addEventListener("click", function(){ openEventModal(ev); });
             tagsWrap.appendChild(t);
           });
