@@ -64,9 +64,11 @@
   .day.today .num { background:var(--accent); color:var(--accent-ink); width:20px; height:20px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; font-size:11.5px; }
   .tags { display:flex; flex-direction:column; gap:3px; }
-  .tag { font-size:10.8px; font-weight:600; padding:2px 6px 2px 7px; border-radius:5px; color:var(--ink);
-    background:var(--surface-2); border:1px solid var(--border); border-left:4px solid var(--border); white-space:nowrap;
-    overflow:hidden; text-overflow:ellipsis; line-height:1.5; cursor:pointer; }
+  .tag { display:flex; align-items:baseline; gap:4px; font-size:10.8px; font-weight:600; padding:2px 6px 2px 7px; border-radius:5px; color:var(--ink);
+    background:var(--surface-2); border:1px solid var(--border); border-left:4px solid var(--border);
+    line-height:1.5; cursor:pointer; }
+  .tag-label { flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tag-time { flex:0 0 auto; white-space:nowrap; opacity:0.85; }
   .tag.more { background:var(--surface-2); color:var(--muted); border:1px dashed var(--border); }
   .tag:hover { filter:brightness(1.12); }
   .totals-panel { margin-top:22px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; }
@@ -90,7 +92,7 @@
   @media (max-width:720px) {
     .cal-head, .week-row { grid-template-columns:repeat(5,minmax(0,1fr)) 40px; }
     .day { min-height:92px; padding:6px; }
-    .tag { font-size:9.5px; padding:1px 4px 1px 6px; border-left-width:3px; }
+    .tag { font-size:9.5px; padding:1px 4px 1px 6px; border-left-width:3px; gap:3px; }
     .month-nav .label { min-width:108px; font-size:13px; }
   }
 </style>
@@ -285,7 +287,12 @@
             var t=document.createElement("div"); t.className="tag"; t.style.borderLeftColor=ev.color;
             var timeStr = formatTimeLabel(ev.time);
             t.title = ev.label + (timeStr? " "+timeStr:"") + (ev.title? " — "+ev.title:"");
-            t.textContent = ev.label + (timeStr? "  "+timeStr:"");
+            var labelEl=document.createElement("span"); labelEl.className="tag-label"; labelEl.textContent=ev.label;
+            t.appendChild(labelEl);
+            if (timeStr){
+              var timeEl=document.createElement("span"); timeEl.className="tag-time"; timeEl.textContent="• "+timeStr;
+              t.appendChild(timeEl);
+            }
             t.addEventListener("click", function(){ openEventModal(ev); });
             tagsWrap.appendChild(t);
           });
