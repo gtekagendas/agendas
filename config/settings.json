@@ -5,11 +5,6 @@
     "gtek_nao-identificado": { "name": "Geral", "color": "#F472B6" },
     "gtek_tiago": { "name": "Tiago", "color": "#34d399" },
     "gtek_treinamento-auditorio-leandro-morgana": { "name": "Não identificado", "color": "#f472b6" },
-    "perif_comum": { "name": "Agenda em comum", "color": "#ffdd00" },
-    "perif_online_eviany": { "name": "Online - Eviany", "color": "#e93535" },
-    "perif_online_rafael": { "name": "Online - Rafael", "color": "#003dcc" },
-    "perif_presencial_eviany": { "name": "Presencial - Eviany", "color": "#ff758c" },
-    "perif_presencial_rafael": { "name": "Presencial - Rafael", "color": "#46e0fb" },
     "perif_retencoes": { "name": "Contato retenções", "color": "#000000" }
   },
   "hiddenKeys": {
